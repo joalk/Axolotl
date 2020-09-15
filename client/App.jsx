@@ -7,7 +7,6 @@ import { setAllCards } from './actions/action.js';
 import * as actions from './actions/action.js';
 import { connect } from 'react-redux';
 import SignUp from './components/SignUp.jsx';
-
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,7 +18,6 @@ import { MultipleSelect } from './components/DropdownMenu.jsx';
 const mapStateToProps = (state) => ({
   cardList: state.cardList,
   newSearch: state.newSearch,
-
   loggedIn: state.loggedIn,
   cardList: state.cardList,
   currentUser: state.currentUser,
@@ -31,6 +29,8 @@ const mapStateToProps = (state) => ({
   newDocumentation: state.newDocumentation,
   readyToDisplay: state.readyToDisplay,
   technologies: state.technologies,
+  newSearch: state.newSearch,
+  newLogin: state.newLogin,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -39,6 +39,9 @@ const mapDispatchToProps = (dispatch) => ({
   addCard: (id) => dispatch(actions.addCard(id)),
   deleteCard: (id) => dispatch(actions.deleteCard(id)),
   setNewSearch: (search) => dispatch(actions.setNewSearch(search)),
+  handleClick: (user) => dispatch(actions.signupUser(user)),
+  updateNewSearch: (search) => dispatch(actions.addSearch(search)),
+  updateNewLogin: (login) => dispatch(actions.newLogin(login)),
 });
 
 //-----------------styling -------------------//
@@ -71,7 +74,6 @@ class App extends Component {
   }
 
   render() {
-
     const cards = this.props.readyToDisplay ? (
       this.props.cardList.map((card) => (
         <OutlinedCard
@@ -88,7 +90,11 @@ class App extends Component {
         <div>
           <Header />
           <Switch>
-            <Route exact path='/user' component={SignIn} />
+            <Route
+              exact
+              path='/user'
+              render={(props) => <SignIn {...this.props} />}
+            />
             <Route exact path='/signup' component={SignUp} />
           </Switch>
           <button
